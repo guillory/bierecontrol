@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<style>
+.bloc { float: left; margin: 10px; padding: 10px; min-width: 200px; max-width: 300px; border: 1px solid black;} 
+.field {  } 
+.label { float: left; } 
+</style>
+</head>
+<body>
+<h1>{{SSID}} config</h1>
+<form action="?"> 
+<div class="bloc">
+	<h2>Etat</h2><hr>
+	<div class="field"><label>TEMP :<input type=text name="TEMP" value="{{TEMP}}"></label></div>
+	<div class="field">Etat : {{Etat}} </div>
+	<hr>
+	<input type="submit" name="startsequence" value="Start">
+	<input type="submit" name="stopsequence" value="Stop">
+</div>
+</form>
+<form action="?"> 
+	<div class="bloc">
+	<h2>parameters</h2>
+	<div class="field"><label>SSID :<input type=text name="SSID" value="{{SSID}}"></label></div>
+	<div class="field"><label>delai temp :<input type=text name="delaitemp" value="{{delaitemp}}"></label></div>
+	<div class="field"><label>delai mesure :<input type=text name="delaimesure" value="{{delaimesure}}"></label></div>
+	<div class="field"><label>tolerance :<input type=text name="tolerance" value="{{tolerance}}"></label></div>
+	<div class="field"><label>sequence :<input type=text name="sequence" value="{{sequence}}"></label></div>
+	<div class="field"><label>marge 2000W :<input type=text name="marge_de_chauffe_grosse" value="{{marge_de_chauffe_grosse}}"></label></div>
+	<div class="field"><label>marge 500w :<input type=text name="marge_de_chauffe_petite" value="{{marge_de_chauffe_petite}}"></label></div>
+	<hr>
+	<div class="field"><label><input type="submit" name="update" value="update"></label></div>
+	</div>
+</form>
+</body>
+</html>
