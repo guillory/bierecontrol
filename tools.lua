@@ -12,7 +12,6 @@ function decodeURI(s)
 		s = string.gsub(s, '%%(%x%x)', 	function (hex) return string.char(tonumber(hex,16)) end )
 		s = string.gsub (s, "+", " ")
 	end
-
 	return s
 end
 
@@ -29,11 +28,15 @@ function savesetting()
 		then settings['marge_de_chauffe_grosse']=1000; 	end
 	if (settings['marge_de_chauffe_petite']==nil 	or tonumber(settings['marge_de_chauffe_petite'])==nil)	
 		then settings['marge_de_chauffe_petite']=1000; 	end
-	settings=settings['sequence'];
+	settingstemp=settings['sequence'];
 	settings['sequence']="";
-	for a,b,c in string.gmatch(settings['sequence'], "([0-9]+):([0-9]+):([0-9]+);?") do 
-			settings['sequence']+=a,":",b,":",c,";";
+	for a,b,c in string.gmatch(settingstemp, "([0-9]+):([0-9]+):([0-9]+);?") do 
+		print (a,":",b,":",c,";");
+		settings['sequence']=settings['sequence']..a..":"..b..":"..c..";";
 	end
+	if ( settings['sequence']=="") then settings['sequence']="0:0:0"; end 	
+	print("Seq "..settings['sequence']);
+
    	file.remove("settings.cfg" )
 	file.open("settings.cfg" , "w" )
 	for k,v in pairs(settings) do 
@@ -61,27 +64,5 @@ function loadsetting()
 	else
 		print("fichier settings.cfg introuvable");
 	end
-	
 	return settings;
 end 
-
-
-function split(str, pat)
-   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
-   local fpat = "(.-)" .. pat
-   local last_end = 1
-   local s, e, cap = str:find(fpat, 1)
-   while s do
-      if s ~= 1 or cap ~= "" then
-	 table.insert(t,cap)
-      end
-      last_end = e+1
-      s, e, cap = str:find(fpat, last_end)
-   end
-   if last_end <= #str then
-      cap = str:sub(last_end)
-      table.insert(t, cap)
-   end
-   return t
-end
-

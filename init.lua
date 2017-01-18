@@ -23,11 +23,11 @@ wifi.setmode(wifi.SOFTAP)
 cfg={}  ;
 cfg.ssid=settings['SSID'];
 wifi.ap.config(cfg);
-delaitemp=settings['delaitemp']+0;
-delaimesure=settings['delaimesure']+0;
-tolerance=settings['tolerance']+0;
-marge_de_chauffe_grosse=settings['marge_de_chauffe_grosse']+0;
-marge_de_chauffe_petite=settings['marge_de_chauffe_petite']+0;
+delaitemp=tonumber(settings['delaitemp']);
+delaimesure=tonumber(settings['delaimesure']);
+tolerance=tonumber(settings['tolerance']);
+marge_de_chauffe_grosse=tonumber(settings['marge_de_chauffe_grosse']);
+marge_de_chauffe_petite=tonumber(settings['marge_de_chauffe_petite']);
 settings['Etat']="OFF";
 etapes={};
 consigne=0;
