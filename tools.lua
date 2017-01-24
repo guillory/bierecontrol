@@ -24,10 +24,16 @@ function savesetting()
 		then settings['delaimesure']=1000; 	end
 	if (settings['tolerance']==nil 	 or tonumber(settings['tolerance'])==nil)	
 		then settings['tolerance']=1000; 	end
-	if (settings['marge_de_chauffe_grosse']==nil 	 or tonumber(settings['marge_de_chauffe_grosse'])==nil)	
-		then settings['marge_de_chauffe_grosse']=1000; 	end
-	if (settings['marge_de_chauffe_petite']==nil 	or tonumber(settings['marge_de_chauffe_petite'])==nil)	
-		then settings['marge_de_chauffe_petite']=1000; 	end
+	if (settings['mcg']==nil 	 or tonumber(settings['mcg'])==nil)	
+		then settings['mcg']=1000; 	end
+	if (settings['mcp']==nil 	or tonumber(settings['mcp'])==nil)	
+		then settings['mcp']=1000; 	end
+	if (settings['Kp']==nil 	or tonumber(settings['Kp'])==nil)	
+	then settings['Kp']=1; 	end
+	if (settings['Ki']==nil 	or tonumber(settings['Ki'])==nil)	
+	then settings['Ki']=1; 	end
+	if (settings['Kd']==nil 	or tonumber(settings['Kd'])==nil)	
+	then settings['Kd']=1000; 	end
 	settingstemp=settings['sequence'];
 	settings['sequence']="";
 	for a,b,c in string.gmatch(settingstemp, "([0-9]+):([0-9]+):([0-9]+);?") do 

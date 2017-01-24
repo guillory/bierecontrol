@@ -1,10 +1,12 @@
-node.compile("tools.lua")
-node.compile("ds18b20_small.lua")
-node.compile("webserver.lua")
+node.compile("tools.lua");
+node.compile("postThingSpeak.lua");
+node.compile("ds18b20_small.lua");
+node.compile("webserver.lua");
 
-require("tools")
+require("tools");
 require('ds18b20_small');
-dofile("webserver.lc")
+require('postThingSpeak');
+require("webserver");
 
 gpio.mode(2,gpio.OUTPUT);
 gpio.write(2,gpio.HIGH);
@@ -26,9 +28,13 @@ wifi.ap.config(cfg);
 delaitemp=tonumber(settings['delaitemp']);
 delaimesure=tonumber(settings['delaimesure']);
 tolerance=tonumber(settings['tolerance']);
-marge_de_chauffe_grosse=tonumber(settings['marge_de_chauffe_grosse']);
-marge_de_chauffe_petite=tonumber(settings['marge_de_chauffe_petite']);
+mcg=tonumber(settings['mcg']);
+mcp=tonumber(settings['mcp']);
+Ki=tonumber(settings['Ki']);
+Kp=tonumber(settings['Kp']);
+Kd=tonumber(settings['Kd']);
 settings['Etat']="OFF";
+
 etapes={};
 consigne=0;
 i = 1;
@@ -56,13 +62,14 @@ function startsequence()
 	settings['Etat']="ON";
 	print("Start");
 	tmr.alarm(1, delaimesure, 1, function()
-			if ((temp + marge_de_chauffe_grosse ) < etapes[etape][2]) then
+			 postThingSpeak();
+			if ((temp + mcg ) < etapes[etape][2]) then
 				action="CHAUFFE GROSSE";
 				gpio.write(3,gpio.LOW); -- relai 3 Switch relai
 				gpio.write(2,gpio.LOW); -- relai 2= alim 
 				gpio.write(5,gpio.LOW);gpio.write(6,gpio.LOW);gpio.write(7,gpio.HIGH); -- led verte
 			end
-			if ((temp + marge_de_chauffe_petite )<etapes[etape][2]) then
+			if ((temp + mcp )<etapes[etape][2]) then
 				action="CHAUFFE PETITE";
 				gpio.write(3,gpio.HIGH); -- relai 3 Switch relai
 				gpio.write(2,gpio.LOW); -- relai 2= alim
@@ -110,7 +117,6 @@ function startsequence()
 				end			
 	end)
 end
-Kp=1;Ki=0;Kd=0;
 somme_erreurs=0;variation_erreur=0;erreur=0;erreur_precedente=0;
 tmr.alarm(0, delaitemp, 1, function()		
 		--  D7 ds18b20 --------------------
@@ -122,8 +128,8 @@ tmr.alarm(0, delaitemp, 1, function()
 		erreur = consigne - temp;
 	    somme_erreurs = erreur+ somme_erreurs;
 	    variation_erreur = erreur - erreur_precedente;
-	    commande = Kp * erreur + Ki * somme_erreurs + Kd * variation_erreur;
-	    print("commande :"..commande)
+	    PID = Kp * erreur + Ki * somme_erreurs + Kd * variation_erreur;
+	    print("PID :"..PID)
 	    erreur_precedente = erreur
 	end
 
